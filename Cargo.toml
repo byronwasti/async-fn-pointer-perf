@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = [
+    "normal-func-pointer",
+    "boxed-func-pointer",
+    "async-func",
+    "boxed-async-func",
+]
+
+[profile.release]
+debug = true

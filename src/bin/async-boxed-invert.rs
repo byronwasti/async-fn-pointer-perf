@@ -4,25 +4,22 @@ use std::pin::Pin;
 
 #[tokio::main]
 async fn main() {
-    let foo = Foo {
-        func: Box::pin(benchmark(bar)),
-    };
-
-    foo.func.await;
+    load_test_outer(Box::pin(load_test(foo))).await;
 }
 
-type BoxedFut = Pin<Box<dyn Future<Output = ()> + Send>>;
-
-struct Foo {
-    func: BoxedFut,
+async fn load_test_outer(test: Pin<Box<dyn Future<Output=()>>>) {
+    test.await;
 }
 
-async fn bar(arg: i32) -> i32 {
-    black_box(arg * 2)
-}
-
-async fn benchmark<T: Fn(i32) -> F, F: Future<Output=i32>>(func: T) {
+async fn load_test<T, F>(func: T)
+where T: Fn(i32) -> F,
+      F: Future<Output=i32>,
+{
     for i in 0..250_000_000 {
-        func(i).await;
+        let _res = func(i).await;
     }
+}
+
+async fn foo(arg: i32) -> i32 {
+    black_box(arg * 2)
 }

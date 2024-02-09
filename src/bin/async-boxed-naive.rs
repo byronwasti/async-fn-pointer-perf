@@ -4,23 +4,17 @@ use std::pin::Pin;
 
 #[tokio::main]
 async fn main() {
-    let foo = Foo {
-        func: bar,
-    };
+    load_test(foo).await;
+}
 
+async fn load_test(func: fn(i32) -> Pin<Box<dyn Future<Output=i32>>>) {
     for i in 0..250_000_000 {
-        let _res = (foo.func)(i).await;
+        let _res = func(i).await;
     }
 }
 
-type BoxedFut = Pin<Box<dyn Future<Output = i32> + Send>>;
-
-struct Foo {
-    func: fn(i32) -> BoxedFut,
-}
-
-fn bar(arg: i32) -> BoxedFut {
+fn foo(arg: i32) -> Pin<Box<dyn Future<Output=i32>>> {
     Box::pin(async move {
-        arg * 2
+        black_box(arg * 2)
     })
 }

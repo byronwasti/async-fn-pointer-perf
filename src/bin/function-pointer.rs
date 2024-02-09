@@ -1,19 +1,16 @@
+//! Baseline of function pointer performance
 use std::hint::black_box;
 
 fn main() {
-    let foo = Foo {
-        func: foo,
-    };
+    load_test(foo);
+}
 
+fn load_test(func: fn(i32) -> i32) {
     for i in 0..250_000_000 {
-        let _res = black_box((foo.func)(i));
+        let _res = func(i);
     }
 }
 
-struct Foo {
-    func: fn(i32) -> i32,
-}
-
 fn foo(arg: i32) -> i32 {
-    arg * 2
+    black_box(arg * 2)
 }

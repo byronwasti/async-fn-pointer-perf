@@ -2,25 +2,27 @@ use std::hint::black_box;
 
 #[tokio::main]
 async fn main() {
-    let foo = Foo::Bar;
+    load_test(Func::Foo).await;
+}
 
+async fn load_test(func: Func) {
     for i in 0..250_000_000 {
-        foo.run(i).await;
+        func.run(i).await;
     }
 }
 
-async fn bar(arg: i32) -> i32 {
+async fn foo(arg: i32) -> i32 {
     black_box(arg * 2)
 }
 
-enum Foo {
-    Bar,
+enum Func {
+    Foo
 }
 
-impl Foo {
+impl Func {
     async fn run(&self, arg: i32) -> i32 {
         match self {
-            Foo::Bar => bar(arg).await,
+            Func::Foo => foo(arg).await,
         }
     }
 }

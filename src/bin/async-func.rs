@@ -1,11 +1,12 @@
+//! Baseline of async performance
 use std::hint::black_box;
 
 #[tokio::main]
 async fn main() {
-    benchmark().await;
+    load_test().await;
 }
 
-async fn benchmark() {
+async fn load_test() {
     for i in 0..250_000_000 {
         foo(i).await;
     }

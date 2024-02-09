@@ -1,4 +1,4 @@
-all: normal boxed async async-boxed
+all: normal boxed async async-boxed-all
 
 build:
     cargo build --release
@@ -13,12 +13,12 @@ async: build
     hyperfine target/release/async-func
 
 
-async-boxed: async-boxed-naive async-boxed-invert async-enum
+async-boxed-all: async-boxed-naive async-boxed-invert async-enum
 
 async-boxed-naive: build
     hyperfine target/release/async-boxed-naive
 
-# Identical to naive
+# Identical to boxed-naive
 async-boxed-closure: build
     hyperfine target/release/async-boxed-closure
 

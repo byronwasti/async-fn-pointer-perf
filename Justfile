@@ -1,30 +1,33 @@
-all: normal boxed async boxed-async
+all: normal boxed async async-boxed
 
 build:
     cargo build --release
 
 normal: build
-    hyperfine target/release/normal-func-pointer
+    hyperfine target/release/function-pointer
 
 boxed: build
-    hyperfine target/release/boxed-func-pointer
+    hyperfine target/release/boxed-function-pointer
 
 async: build
     hyperfine target/release/async-func
 
 
-boxed-async: boxed-async-naive boxed-async-invert
+async-boxed: async-boxed-naive async-boxed-invert async-enum
 
-boxed-async-naive: build
-    hyperfine target/release/naive
+async-boxed-naive: build
+    hyperfine target/release/async-boxed-naive
 
 # Identical to naive
-boxed-async-closure: build
-    hyperfine target/release/closure
+async-boxed-closure: build
+    hyperfine target/release/async-boxed-closure
 
 # Not worth even running; crazy slow
-boxed-async-spawn: build
-    hyperfine target/release/spawn
+async-boxed-spawn: build
+    hyperfine target/release/async-boxed-spawn
 
-boxed-async-invert: build
-    hyperfine target/release/invert
+async-boxed-invert: build
+    hyperfine target/release/async-boxed-invert
+
+async-enum: build
+    hyperfine target/release/async-enum

@@ -2,7 +2,7 @@
 use std::hint::black_box;
 
 fn main() {
-    load_test(foo);
+    load_test(black_box(foo));
 }
 
 fn load_test(func: fn(i32) -> i32) {

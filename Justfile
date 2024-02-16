@@ -1,4 +1,5 @@
 all: normal boxed async async-boxed-all
+fast: normal boxed async-boxed-invert async-enum async
 
 build:
     cargo build --release
